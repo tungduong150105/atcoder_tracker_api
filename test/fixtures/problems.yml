@@ -1,0 +1,29 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  atcoder_id: MyString
+  title: MyString
+  author: MyString
+  url: MyString
+  rating: 1
+  solved: 1
+  tried: 1
+  description: MyText
+  sample_test: [MyString]
+  tags: [MyString]
+  hints: [MyString]
+  tutorial_code: MyText
+
+two:
+  atcoder_id: MyString
+  title: MyString
+  author: MyString
+  url: MyString
+  rating: 1
+  solved: 1
+  tried: 1
+  description: MyText
+  sample_test: [MyString]
+  tags: [MyString]
+  hints: [MyString]
+  tutorial_code: MyText
