@@ -46,6 +46,10 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.expect(user: [ :username, :email, :password_digest, :atcoder_handle, :rating ])
+      if action_name == "create"
+        params.expect(user: [ :username, :email, :password, :password_confirmation, :atcoder_handle ])
+      else
+        params.expect(user: [ :email, :password, :password_confirmation, :atcoder_handle, :rating ])
+      end
     end
 end

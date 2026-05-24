@@ -2,7 +2,7 @@ require "test_helper"
 
 class UsersControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @user = users(:one)
+    @user = create(:user)
   end
 
   test "should get index" do
@@ -11,8 +11,10 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create user" do
+    new_user = attributes_for(:user)
+
     assert_difference("User.count") do
-      post users_url, params: { user: { atcoder_handle: @user.atcoder_handle, email: @user.email, password_digest: @user.password_digest, rating: @user.rating, username: @user.username } }, as: :json
+      post users_url, params: { user: new_user }, as: :json
     end
 
     assert_response :created
@@ -24,8 +26,28 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update user" do
-    patch user_url(@user), params: { user: { atcoder_handle: @user.atcoder_handle, email: @user.email, password_digest: @user.password_digest, rating: @user.rating, username: @user.username } }, as: :json
+    old_username = @user.username
+    new_email = Faker::Internet.unique.email
+    new_atcoder_handle = Faker::Internet.unique.username(specifier: 5..10)
+    new_rating = Faker::Number.between(from: 0, to: 3000)
+
+    patch user_url(@user), params: {
+      user: {
+        username: "new_user_name",
+        email: new_email,
+        atcoder_handle: new_atcoder_handle,
+        rating: new_rating
+      }
+    }, as: :json
+
     assert_response :success
+
+    @user.reload
+
+    assert_equal new_email, @user.email
+    assert_equal new_atcoder_handle, @user.atcoder_handle
+
+    assert_equal old_username, @user.username
   end
 
   test "should destroy user" do

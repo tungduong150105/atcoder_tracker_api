@@ -2,7 +2,10 @@ require "test_helper"
 
 class SubmitRecordsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @submit_record = submit_records(:one)
+    @user = create(:user)
+    @problem = create(:problem)
+
+    @submit_record = create(:submit_record, user: @user, problem: @problem)
   end
 
   test "should get index" do
@@ -11,8 +14,13 @@ class SubmitRecordsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create submit_record" do
+    new_submit_record = attributes_for(:submit_record).merge(
+      user_id: @user.id,
+      problem_id: @problem.id
+    )
+
     assert_difference("SubmitRecord.count") do
-      post submit_records_url, params: { submit_record: { execution_time: @submit_record.execution_time, memory_used: @submit_record.memory_used, problem_id: @submit_record.problem_id, status: @submit_record.status, submission_id: @submit_record.submission_id, submitted_at: @submit_record.submitted_at, user_id: @submit_record.user_id } }, as: :json
+      post submit_records_url, params: { submit_record: new_submit_record }, as: :json
     end
 
     assert_response :created
@@ -24,8 +32,28 @@ class SubmitRecordsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update submit_record" do
-    patch submit_record_url(@submit_record), params: { submit_record: { execution_time: @submit_record.execution_time, memory_used: @submit_record.memory_used, problem_id: @submit_record.problem_id, status: @submit_record.status, submission_id: @submit_record.submission_id, submitted_at: @submit_record.submitted_at, user_id: @submit_record.user_id } }, as: :json
+    status = %w[AC WA TLE MLE RTE RE CE].sample
+    execution_time = Faker::Number.between(from: 5, to: 1500)
+    memory_used = Faker::Number.between(from: 1024, to: 262144)
+    submitted_at = Faker::Time.backward(days: 30)
+
+    patch submit_record_url(@submit_record), params: {
+      submit_record: {
+        execution_time: execution_time,
+        memory_used: memory_used,
+        status: status,
+        submitted_at: submitted_at
+      }
+    }, as: :json
+
     assert_response :success
+
+    @submit_record.reload
+
+    assert_equal status, @submit_record.status
+    assert_equal execution_time, @submit_record.execution_time
+    assert_equal memory_used, @submit_record.memory_used
+    assert_equal submitted_at.to_i, @submit_record.submitted_at.to_i
   end
 
   test "should destroy submit_record" do

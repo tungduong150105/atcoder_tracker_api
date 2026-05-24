@@ -1,6 +1,10 @@
 class User < ApplicationRecord
   has_secure_password
 
+  attr_readonly :username
+
+  attribute :rating, :integer, default: 0
+
   has_many :submit_records, dependent: :destroy
   has_many :attemped_problems, through: :submit_records, source: :problem
 

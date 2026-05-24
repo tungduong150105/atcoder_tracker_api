@@ -46,6 +46,7 @@ class ProblemsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def problem_params
-      params.expect(problem: [ :atcoder_id, :title, :author, :url, :rating, :solved, :tried, :description, :sample_test, :tags, :hints, :tutorial_code ])
+      params.expect(problem: [ :atcoder_id, :title, :author, :url, :rating, :solved, :tried, :description, :tutorial_code,
+                               { sample_test: [], tags: [], hints: [] } ])
     end
 end
