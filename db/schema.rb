@@ -19,11 +19,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_18_091216) do
     t.string "author"
     t.datetime "created_at", null: false
     t.text "description"
-    t.string "hints", default: [], array: true
+    t.jsonb "hints", default: []
     t.integer "rating"
-    t.string "sample_test", default: [], array: true
+    t.jsonb "sample_test", default: []
     t.integer "solved"
-    t.string "tags", default: [], array: true
+    t.jsonb "tags", default: []
     t.string "title"
     t.integer "tried"
     t.text "tutorial_code"

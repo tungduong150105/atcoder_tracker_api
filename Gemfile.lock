@@ -368,6 +368,7 @@ DEPENDENCIES
   brakeman
   bundler-audit
   debug
+  dotenv (~> 3.1)
   factory_bot_rails
   faker
   image_processing (~> 1.2)
