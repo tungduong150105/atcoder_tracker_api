@@ -4,6 +4,9 @@ Rails.application.routes.draw do
       resources :submit_records
       resources :users
       resources :problems
+
+      post "login", to: "sessions#create"
+      delete "logout", to: "sessions#destroy"
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

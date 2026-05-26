@@ -56,3 +56,5 @@ group :development do
   gem "ruby-lsp", require: false
   gem "ruby-lsp-rails", require: false
 end
+
+gem "jwt"
